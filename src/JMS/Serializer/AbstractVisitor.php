@@ -18,15 +18,22 @@
 
 namespace JMS\Serializer;
 
-use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use JMS\Serializer\Accessor\AccessorStrategyInterface;
+use JMS\Serializer\Accessor\DefaultAccessorStrategy;
 
 abstract class AbstractVisitor implements VisitorInterface
 {
     protected $namingStrategy;
 
-    public function __construct(PropertyNamingStrategyInterface $namingStrategy)
+    /**
+     * @var AccessorStrategyInterface
+     */
+    protected $accessor;
+
+    public function __construct($namingStrategy, AccessorStrategyInterface $accessorStrategy = null)
     {
         $this->namingStrategy = $namingStrategy;
+        $this->accessor = $accessorStrategy ?: new DefaultAccessorStrategy();
     }
 
     public function getNamingStrategy()
@@ -54,5 +61,4 @@ abstract class AbstractVisitor implements VisitorInterface
             return $typeArray['params'][0];
         }
     }
-
 }
